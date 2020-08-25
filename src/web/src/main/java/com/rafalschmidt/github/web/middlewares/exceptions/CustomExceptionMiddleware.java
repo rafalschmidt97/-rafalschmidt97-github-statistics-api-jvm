@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import static com.google.common.base.Predicates.instanceOf;
+import static io.vavr.API.*;
+
 @RestControllerAdvice
 @Slf4j
 @RequiredArgsConstructor
@@ -16,6 +19,14 @@ public class CustomExceptionMiddleware {
 
   @ExceptionHandler(CustomHttpException.class)
   public ResponseEntity<ExceptionResponse> handleCustomException(CustomHttpException exception) {
+
+    Match((Object) exception).of(
+      Case($(instanceOf(InternalServerException.class)), run(() -> {
+        log.error(exception.getStatus().getReasonPhrase());
+        exception.printStackTrace();
+      }))
+    );
+
     if (exception instanceof InternalServerException) {
       log.error(exception.getStatus().getReasonPhrase());
       exception.printStackTrace();

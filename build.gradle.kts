@@ -23,6 +23,7 @@ subprojects {
   dependencies {
     compileOnly("org.projectlombok:lombok:1.18.10")
     annotationProcessor("org.projectlombok:lombok:1.18.10")
+    implementation("io.vavr:vavr:1.0.0-alpha-3")
   }
 
   // Spring boot DI context
@@ -44,8 +45,8 @@ subprojects {
 
   tasks.withType<Checkstyle> {
     reports {
-      xml.isEnabled = false
-      html.isEnabled = true
+      xml.isEnabled = true
+      html.isEnabled = false
     }
   }
 
@@ -76,8 +77,8 @@ subprojects {
 
   tasks.withType<Pmd> {
     reports {
-      xml.isEnabled = false
-      html.isEnabled = true
+      xml.isEnabled = true
+      html.isEnabled = false
     }
   }
 }
